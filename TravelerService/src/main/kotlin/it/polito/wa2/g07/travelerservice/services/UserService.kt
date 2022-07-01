@@ -1,8 +1,8 @@
-package it.polito.wa2.g07.lab4.services
+package it.polito.wa2.g07.travelerservice.services
 
-import it.polito.wa2.g07.lab4.dtos.TicketPurchasedDTO
-import it.polito.wa2.g07.lab4.dtos.UserDetailsDTO
-import it.polito.wa2.g07.lab4.utils.UpdateProfileData
+import it.polito.wa2.g07.travelerservice.dtos.TicketPurchasedDTO
+import it.polito.wa2.g07.travelerservice.dtos.UserDetailsDTO
+import it.polito.wa2.g07.travelerservice.utils.UpdateProfileData
 
 interface UserService {
     fun getUser(userDetailsDTO: UserDetailsDTO): UserDetailsDTO

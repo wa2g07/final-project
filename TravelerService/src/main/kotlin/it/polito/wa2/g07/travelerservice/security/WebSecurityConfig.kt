@@ -1,4 +1,4 @@
-package it.polito.wa2.g07.lab4.security
+package it.polito.wa2.g07.travelerservice.security
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean

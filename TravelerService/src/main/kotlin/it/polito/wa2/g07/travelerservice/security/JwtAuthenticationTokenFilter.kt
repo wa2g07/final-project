@@ -1,4 +1,4 @@
-package it.polito.wa2.g07.lab4.security
+package it.polito.wa2.g07.travelerservice.security
 
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory

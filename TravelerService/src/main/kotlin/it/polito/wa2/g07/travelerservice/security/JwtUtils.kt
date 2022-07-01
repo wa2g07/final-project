@@ -1,4 +1,4 @@
-package it.polito.wa2.g07.lab4.security
+package it.polito.wa2.g07.travelerservice.security
 
 import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.Jwts
@@ -7,7 +7,7 @@ import io.jsonwebtoken.UnsupportedJwtException
 import io.jsonwebtoken.io.Decoders
 import io.jsonwebtoken.security.Keys
 import io.jsonwebtoken.security.SignatureException
-import it.polito.wa2.g07.lab4.dtos.UserDetailsDTO
+import it.polito.wa2.g07.travelerservice.dtos.UserDetailsDTO
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value

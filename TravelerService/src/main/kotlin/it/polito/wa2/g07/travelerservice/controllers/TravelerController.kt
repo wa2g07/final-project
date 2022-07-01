@@ -1,12 +1,12 @@
-package it.polito.wa2.g07.lab4.controllers
+package it.polito.wa2.g07.travelerservice.controllers
 
-import it.polito.wa2.g07.lab4.dtos.UserDetailsDTO
-import it.polito.wa2.g07.lab4.services.AdminService
-import it.polito.wa2.g07.lab4.services.UserService
-import it.polito.wa2.g07.lab4.utils.BuyTicketRequest
-import it.polito.wa2.g07.lab4.utils.ProfileResponse
-import it.polito.wa2.g07.lab4.utils.TicketResponse
-import it.polito.wa2.g07.lab4.utils.UpdateProfileData
+import it.polito.wa2.g07.travelerservice.dtos.UserDetailsDTO
+import it.polito.wa2.g07.travelerservice.services.AdminService
+import it.polito.wa2.g07.travelerservice.services.UserService
+import it.polito.wa2.g07.travelerservice.utils.BuyTicketRequest
+import it.polito.wa2.g07.travelerservice.utils.ProfileResponse
+import it.polito.wa2.g07.travelerservice.utils.TicketResponse
+import it.polito.wa2.g07.travelerservice.utils.UpdateProfileData
 import org.springframework.http.HttpStatus
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.*

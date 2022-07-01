@@ -1,4 +1,4 @@
-package it.polito.wa2.g07.lab4.entities
+package it.polito.wa2.g07.travelerservice.entities
 
 import java.util.*
 import javax.persistence.*

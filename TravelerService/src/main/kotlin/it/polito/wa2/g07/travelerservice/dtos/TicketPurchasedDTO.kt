@@ -1,6 +1,6 @@
-package it.polito.wa2.g07.lab4.dtos
+package it.polito.wa2.g07.travelerservice.dtos
 
-import it.polito.wa2.g07.lab4.entities.TicketPurchased
+import it.polito.wa2.g07.travelerservice.entities.TicketPurchased
 
 data class TicketPurchasedDTO(val id: Long?,
                               val exp: String = "",

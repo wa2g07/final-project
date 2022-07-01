@@ -1,6 +1,6 @@
-package it.polito.wa2.g07.lab4.dtos
+package it.polito.wa2.g07.travelerservice.dtos
 
-import it.polito.wa2.g07.lab4.entities.UserDetails
+import it.polito.wa2.g07.travelerservice.entities.UserDetails
 import java.util.*
 
 data class UserDetailsDTO(

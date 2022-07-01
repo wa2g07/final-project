@@ -1,4 +1,4 @@
-package it.polito.wa2.g07.lab4.utils
+package it.polito.wa2.g07.travelerservice.utils
 
 import java.util.*
 

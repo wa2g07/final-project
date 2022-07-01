@@ -1,9 +1,9 @@
-package it.polito.wa2.g07.lab4.services
+package it.polito.wa2.g07.travelerservice.services
 
-import it.polito.wa2.g07.lab4.dtos.TicketPurchasedDTO
-import it.polito.wa2.g07.lab4.dtos.UserDetailsDTO
-import it.polito.wa2.g07.lab4.dtos.toDTO
-import it.polito.wa2.g07.lab4.repositories.UserDetailsRepository
+import it.polito.wa2.g07.travelerservice.dtos.TicketPurchasedDTO
+import it.polito.wa2.g07.travelerservice.dtos.UserDetailsDTO
+import it.polito.wa2.g07.travelerservice.dtos.toDTO
+import it.polito.wa2.g07.travelerservice.repositories.UserDetailsRepository
 import org.springframework.stereotype.Service
 import javax.transaction.Transactional
 
