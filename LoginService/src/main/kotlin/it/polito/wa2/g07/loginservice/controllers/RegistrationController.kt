@@ -1,4 +1,4 @@
-package it.polito.wa2.g07.controllers
+package it.polito.wa2.g07.loginservice.controllers
 
 import it.polito.wa2.g07.loginservice.dtos.ActivationDTO
 import it.polito.wa2.g07.loginservice.dtos.UserDTO
