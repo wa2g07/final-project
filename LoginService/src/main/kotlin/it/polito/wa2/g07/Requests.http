@@ -1,0 +1,32 @@
+POST http://127.0.0.1:8080/user/register
+Content-Type: application/json
+
+{
+  "nickname": "nick",
+  "email": "test@gmail.com",
+  "password": "Piraaaa0!"
+}
+
+###
+
+POST http://127.0.0.1:8080/user/register
+Content-Type: application/json
+
+{
+  "nickname": "cheina97",
+  "email": "cheinasso.francesco@gmail.com",
+  "password": "Piraaaa0!"
+}
+
+### To validate, retrieve correct data from the email received
+
+POST http://127.0.0.1:8080/user/validate
+Content-Type: application/json
+
+{
+  "provisional_id": "63688015-17a8-4448-a6ce-09aa5164ae10",
+  "activation_code": "468074"
+}
+
+###
+
