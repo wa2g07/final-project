@@ -1,0 +1,89 @@
+package it.polito.wa2.g07.lab4.services
+
+import it.polito.wa2.g07.lab4.dtos.UserDetailsDTO
+import it.polito.wa2.g07.lab4.dtos.toDTO
+import it.polito.wa2.g07.lab4.entities.UserDetails
+import it.polito.wa2.g07.lab4.repositories.TicketPurchasedRepository
+import it.polito.wa2.g07.lab4.repositories.UserDetailsRepository
+import it.polito.wa2.g07.lab4.utils.UpdateProfileData
+import it.polito.wa2.g07.lab4.utils.makeJWT
+import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
+import io.jsonwebtoken.io.Decoders
+import io.jsonwebtoken.security.Keys
+import it.polito.wa2.g07.lab4.dtos.TicketPurchasedDTO
+import it.polito.wa2.g07.lab4.entities.TicketPurchased
+import org.springframework.beans.factory.annotation.Value
+import javax.annotation.PostConstruct
+import javax.crypto.SecretKey
+
+@Service
+@Transactional
+class UserServiceImpl(val userDetailsRepository: UserDetailsRepository, val ticketPurchasedRepository: TicketPurchasedRepository) : UserService {
+
+    @Value("\${secrets.ticketJwtKey}")
+    lateinit var b64Key: String
+
+    lateinit var key : SecretKey
+
+    @PostConstruct
+    fun initKey(){
+        key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(b64Key))
+    }
+
+    override fun getUser(userDetailsDTO: UserDetailsDTO): UserDetailsDTO {
+        val u = userDetailsRepository.getUserDetailsByUsername(userDetailsDTO.username) ?: return userDetailsDTO
+        return u.toDTO()
+    }
+
+    override fun updateUser(userDetailsDTO: UserDetailsDTO, update: UpdateProfileData) {
+        val u = userDetailsRepository.getUserDetailsByUsername(userDetailsDTO.username)
+        if (u != null) {
+            if (update.address != null) u.address = update.address
+            if (update.name!=null) u.name = update.name
+            if (update.telephone != null) u.telephone = update.telephone
+            if (update.dateOfBirth != null) u.dateOfBirth = update.dateOfBirth
+        }
+        else {
+            val newUserDetails = UserDetails(
+                username = userDetailsDTO.username,
+                address = update.address ?: "",
+                name = update.name ?: "",
+                telephone = update.telephone ?: "",
+                dateOfBirth = update.dateOfBirth
+            )
+            userDetailsRepository.save(newUserDetails)
+        }
+    }
+
+    override fun getTicketPurchased(userDetailsDTO: UserDetailsDTO): List<TicketPurchasedDTO> {
+        val u = userDetailsRepository.getUserDetailsByUsername(userDetailsDTO.username)
+        return u?.tickets?.map { it.toDTO() } ?: emptyList()
+    }
+
+    override fun buyTickets(userDetailsDTO: UserDetailsDTO, quantity: Int, zones: String): List<TicketPurchasedDTO> {
+        var u = userDetailsRepository.getUserDetailsByUsername(userDetailsDTO.username)
+        if( u == null){
+            val newUserDetails = UserDetails(
+                username = userDetailsDTO.username,
+                address =  "",
+                name =  "",
+                telephone = "",
+                dateOfBirth = null
+            )
+            u = userDetailsRepository.save(newUserDetails)
+        }
+        val newTickets = mutableListOf<TicketPurchasedDTO>()
+        for (i in 1..quantity){
+            val newTicket = ticketPurchasedRepository.save(TicketPurchased(zones = zones,user = u)) //create the ticket entity to retrieve its id
+            val jws = makeJWT(sub = newTicket.id.toString(),
+                    iat = newTicket.iat,
+                    exp = newTicket.exp,
+                    zones = newTicket.zones,
+                    key = key)
+            newTicket.jws = jws
+            newTickets.add(newTicket.toDTO())
+        }
+        return newTickets
+    }
+}
