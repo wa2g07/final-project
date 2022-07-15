@@ -30,6 +30,9 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-security")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	runtimeOnly("org.postgresql:postgresql")
+	implementation("io.github.g0dkar:qrcode-kotlin:1.1.0")
+	implementation("com.google.code.gson:gson:2.8.5")
+
 }
 
 tasks.withType<KotlinCompile> {

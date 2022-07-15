@@ -56,9 +56,18 @@ class UserServiceImpl(val userDetailsRepository: UserDetailsRepository, val tick
         }
     }
 
-    override fun getTicketPurchased(userDetailsDTO: UserDetailsDTO): List<TicketPurchasedDTO> {
+    override fun getTicketsPurchased(userDetailsDTO: UserDetailsDTO): List<TicketPurchasedDTO> {
         val u = userDetailsRepository.getUserDetailsByUsername(userDetailsDTO.username)
         return u?.tickets?.map { it.toDTO() } ?: emptyList()
+    }
+
+    override fun getTicketPurchased(userDetailsDTO: UserDetailsDTO, ticketId: Long): TicketPurchasedDTO {
+        val t = ticketPurchasedRepository.findById(ticketId).get()
+        if (t.user!!.username != userDetailsDTO.username){
+            throw Exception();
+        }
+        else
+            return t.toDTO();
     }
 
     override fun buyTickets(userDetailsDTO: UserDetailsDTO, quantity: Int, zones: String): List<TicketPurchasedDTO> {
