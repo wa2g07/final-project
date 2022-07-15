@@ -17,11 +17,19 @@ import org.springframework.http.HttpHeaders.CONTENT_DISPOSITION
 import org.springframework.http.MediaType.IMAGE_PNG_VALUE
 import org.springframework.http.ResponseEntity
 import com.google.gson.Gson
+import org.springframework.http.MediaType
 import java.io.ByteArrayOutputStream
 import javax.imageio.ImageIO
 
 @RestController
 class TravelerController(val userService: UserService, val adminService: AdminService ) {
+
+
+    @GetMapping(value = ["/secret"],produces = [MediaType.APPLICATION_NDJSON_VALUE])
+    @ResponseStatus(HttpStatus.OK)
+    fun getSecret(): String {
+        return userService.getSecret()
+    }
 
     @GetMapping("/my/profile")
     @ResponseStatus(HttpStatus.OK)

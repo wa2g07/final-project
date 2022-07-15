@@ -31,6 +31,9 @@ class UserServiceImpl(val userDetailsRepository: UserDetailsRepository, val tick
         key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(b64Key))
     }
 
+    override fun getSecret() : String{
+        return b64Key
+    }
     override fun getUser(userDetailsDTO: UserDetailsDTO): UserDetailsDTO {
         val u = userDetailsRepository.getUserDetailsByUsername(userDetailsDTO.username) ?: return userDetailsDTO
         return u.toDTO()

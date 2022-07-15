@@ -10,4 +10,5 @@ interface UserService {
     fun getTicketsPurchased(userDetailsDTO: UserDetailsDTO) : List<TicketPurchasedDTO>
     fun getTicketPurchased(userDetailsDTO: UserDetailsDTO, ticketId: Long) : TicketPurchasedDTO
     fun buyTickets(userDetailsDTO: UserDetailsDTO, quantity: Int, zones: String) : List<TicketPurchasedDTO>
+    fun getSecret() : String
 }

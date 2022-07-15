@@ -34,6 +34,7 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
         .authorizeRequests()
             .mvcMatchers("/my/**").hasAnyRole("CUSTOMER","ADMIN")
             .mvcMatchers("/admin/**").hasRole("ADMIN")
+            .mvcMatchers("/secret").hasAnyRole("EMBEDDEDSYSTEM","ADMIN")
         .anyRequest().authenticated()
     http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter::class.java)
   }

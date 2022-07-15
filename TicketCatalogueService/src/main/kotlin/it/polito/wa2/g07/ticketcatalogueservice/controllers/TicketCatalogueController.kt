@@ -61,13 +61,6 @@ class TicketCatalogueController(
     return ticketCatalogService.getAllTicketTypes().asFlow()
   }
 
-
-  @GetMapping(value = ["/secret"],produces = [MediaType.APPLICATION_NDJSON_VALUE])
-  @ResponseStatus(HttpStatus.OK)
-  fun getSecret(): String {
-    return jwtUtils.b64Key
-  }
-
   @PostMapping("/shop/{ticketId}")
   @ResponseStatus(HttpStatus.OK)
   suspend fun buyTickets(@RequestHeader header : Map<String, String>, @PathVariable ticketId: String, @RequestBody body : BuyTicketsRequest, @AuthenticationPrincipal principal: Mono<String>): Flow<OrderDTO> {
