@@ -35,6 +35,7 @@ class WebSecurityConfig {
             .pathMatchers("/shop/**","/orders/**").hasAnyRole("CUSTOMER", "ADMIN")
             .pathMatchers("/admin/**").hasRole("ADMIN")
             .pathMatchers("/tickets/**").permitAll()
+             .pathMatchers("/secret").hasAnyRole("EMBEDDEDSYSTEM","ADMIN")
             .anyExchange().authenticated()
              .and()
              .addFilterAt(createAuthenticationFilter(), SecurityWebFiltersOrder.HTTP_BASIC)

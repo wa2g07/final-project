@@ -1,5 +1,6 @@
 package it.polito.wa2.g07.travelerservice.controllers
 
+import io.github.g0dkar.qrcode.QRCode
 import it.polito.wa2.g07.travelerservice.dtos.UserDetailsDTO
 import it.polito.wa2.g07.travelerservice.services.AdminService
 import it.polito.wa2.g07.travelerservice.services.UserService
@@ -11,6 +12,13 @@ import org.springframework.http.HttpStatus
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.server.ResponseStatusException
+import org.springframework.core.io.ByteArrayResource
+import org.springframework.http.HttpHeaders.CONTENT_DISPOSITION
+import org.springframework.http.MediaType.IMAGE_PNG_VALUE
+import org.springframework.http.ResponseEntity
+import com.google.gson.Gson
+import java.io.ByteArrayOutputStream
+import javax.imageio.ImageIO
 
 @RestController
 class TravelerController(val userService: UserService, val adminService: AdminService ) {
@@ -51,12 +59,36 @@ class TravelerController(val userService: UserService, val adminService: AdminSe
     fun getMyTickets() : List<TicketResponse> {
         try{
             val userDetailsWithUsernameOnly = SecurityContextHolder.getContext().authentication.principal as UserDetailsDTO
-            return userService.getTicketPurchased(userDetailsWithUsernameOnly).
+            return userService.getTicketsPurchased(userDetailsWithUsernameOnly).
             map { TicketResponse(sub = it.id!!,
                     zId = it.zId,
                     iat = it.iat,
                     exp = it.exp,
                     jws = it.jws)}
+        }
+        catch(e: Exception){
+            throw ResponseStatusException(HttpStatus.BAD_REQUEST)
+        }
+    }
+
+    @GetMapping("/my/tickets/{ticketId}/qrcode")
+    fun getQrCodeTicket(@PathVariable ticketId : Long): ResponseEntity<ByteArrayResource> {
+        try {
+            val userDetailsWithUsernameOnly = SecurityContextHolder.getContext().authentication.principal as UserDetailsDTO
+            val ticket = userService.getTicketPurchased(
+                    userDetailsWithUsernameOnly,
+                    ticketId = ticketId)
+            val gson = Gson()
+
+            val content = gson.toJson(ticket)
+
+            val imageData = QRCode(content).render()
+            val imageBytes = ByteArrayOutputStream().also { ImageIO.write(imageData, "PNG", it) }.toByteArray()
+            val resource = ByteArrayResource(imageBytes, IMAGE_PNG_VALUE)
+
+            return ResponseEntity.ok()
+                    .header(CONTENT_DISPOSITION, "attachment; filename=\"qrcode.png\"")
+                    .body(resource)
         }
         catch(e: Exception){
             throw ResponseStatusException(HttpStatus.BAD_REQUEST)
