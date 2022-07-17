@@ -9,9 +9,9 @@ import java.util.Date
 data class Transit(
     @Id
     val id: ObjectId = ObjectId.get(),
-    val owner: Date,
     val turnstileId: ObjectId,
-    val ticketId: Long
+    val ticketType: ObjectId,
+    val timestamp: Date,
 ){
 
 }
