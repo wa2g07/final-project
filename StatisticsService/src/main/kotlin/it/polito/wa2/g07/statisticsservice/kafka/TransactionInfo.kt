@@ -1,9 +1,9 @@
-package it.polito.wa2.g07.paymentservice.kafka
+package it.polito.wa2.g07.statisticsservice.kafka
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.util.Date
 
-data class Outcome(
+class TransactionInfo (
     @JsonProperty("result")
     val result: String,
     @JsonProperty("orderId")
@@ -26,4 +26,4 @@ data class Outcome(
     val jwt: String,
     @JsonProperty("date")
     val date: Date
-)
+){}

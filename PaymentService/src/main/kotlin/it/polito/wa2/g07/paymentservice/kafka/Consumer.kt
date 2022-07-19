@@ -11,6 +11,7 @@ import org.springframework.kafka.support.Acknowledgment
 import org.springframework.kafka.support.KafkaHeaders
 import org.springframework.messaging.support.MessageBuilder
 import org.springframework.stereotype.Component
+import java.util.*
 
 @Component
 class Consumer {
@@ -35,26 +36,28 @@ class Consumer {
               ticketId = billingInfo.ticketId
       )).block()
       val message: org.springframework.messaging.Message<Outcome> = MessageBuilder
-              .withPayload(Outcome(
-                      result = "success",
-                      orderId = billingInfo.orderId,
-                      ticketsAmount = billingInfo.ticketsAmount,
-                      ticketId = billingInfo.ticketId,
-                      creditCardNumber = billingInfo.creditCardNumber,
-                      expDate = billingInfo.creditCardNumber,
-                      cvv = billingInfo.cvv,
-                      owner = billingInfo.owner,
-                      totCost = billingInfo.totCost,
-                      jwt = billingInfo.jwt))
-              .setHeader(KafkaHeaders.TOPIC, "outcome")
-              .build()
+          .withPayload(Outcome(
+                  result = "success",
+                  orderId = billingInfo.orderId,
+                  ticketsAmount = billingInfo.ticketsAmount,
+                  ticketId = billingInfo.ticketId,
+                  creditCardNumber = billingInfo.creditCardNumber,
+                  expDate = billingInfo.creditCardNumber,
+                  cvv = billingInfo.cvv,
+                  owner = billingInfo.owner,
+                  totCost = billingInfo.totCost,
+                  jwt = billingInfo.jwt,
+                  date = Date())
+          )
+          .setHeader(KafkaHeaders.TOPIC, "outcome")
+          .build()
       kafkaTemplate.send(message)
     }
     else {
       val message: org.springframework.messaging.Message<Outcome> = MessageBuilder
-              .withPayload(Outcome(
-                      result = "failure",
-                      orderId = billingInfo.orderId,
+          .withPayload(Outcome(
+              result = "failure",
+              orderId = billingInfo.orderId,
               ticketsAmount = billingInfo.ticketsAmount,
               ticketId = billingInfo.ticketId,
               creditCardNumber = billingInfo.creditCardNumber,
@@ -62,9 +65,11 @@ class Consumer {
               cvv = billingInfo.cvv,
               owner = billingInfo.owner,
               totCost = billingInfo.totCost,
-              jwt = billingInfo.jwt))
-              .setHeader(KafkaHeaders.TOPIC, "outcome")
-              .build()
+              jwt = billingInfo.jwt,
+              date = Date())
+          )
+          .setHeader(KafkaHeaders.TOPIC, "outcome")
+          .build()
       kafkaTemplate.send(message)
     }
   }
