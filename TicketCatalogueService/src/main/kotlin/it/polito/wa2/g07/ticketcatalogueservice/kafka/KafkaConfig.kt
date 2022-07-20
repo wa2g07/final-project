@@ -29,6 +29,10 @@ class KafkaConfig(
 
   @Bean
   fun outcomeInformation(): NewTopic {
-    return NewTopic("outcome",1,1.toShort())
+    return NewTopic("outcome", 1, 1.toShort())
+  }
+    @Bean
+    fun transitInformation(): NewTopic {
+      return NewTopic("transit",1,1.toShort())
   }
 }

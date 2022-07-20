@@ -20,7 +20,7 @@ class ConsumersConfig(
 
 {
     @Bean
-    fun consumerFactory(): ConsumerFactory<String?, Any?> {
+    fun transitInfoConsumerFactory(): ConsumerFactory<String?, TransitInfo?> {
         val props: MutableMap<String, Any> = HashMap()
         props[ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG] = servers
         props[ConsumerConfig.GROUP_ID_CONFIG] = "ppr"
@@ -31,11 +31,32 @@ class ConsumersConfig(
     }
 
     @Bean
-    fun kafkaListenerContainerFactory(): ConcurrentKafkaListenerContainerFactory<String, Any>? {
-        val factory = ConcurrentKafkaListenerContainerFactory<String, Any>()
-        factory.consumerFactory = consumerFactory()
+    fun transitInfokafkaListenerContainerFactory(): ConcurrentKafkaListenerContainerFactory<String, TransitInfo>? {
+        val factory = ConcurrentKafkaListenerContainerFactory<String, TransitInfo>()
+        factory.consumerFactory = transitInfoConsumerFactory()
         factory.containerProperties.ackMode = ContainerProperties.AckMode.MANUAL_IMMEDIATE
         factory.containerProperties.isSyncCommits = true
         return factory
     }
+
+    @Bean
+    fun TransactionInfoconsumerFactory(): ConsumerFactory<String?, TransactionInfo?> {
+        val props: MutableMap<String, Any> = HashMap()
+        props[ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG] = servers
+        props[ConsumerConfig.GROUP_ID_CONFIG] = "ppr3"
+        props[ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG] = StringDeserializer::class.java
+        props[ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG] = TransactionInfoDeserializer::class.java
+        props[ConsumerConfig.AUTO_OFFSET_RESET_CONFIG] = "earliest"
+        return DefaultKafkaConsumerFactory(props)
+    }
+
+    @Bean
+    fun TransactionInfokafkaListenerContainerFactory(): ConcurrentKafkaListenerContainerFactory<String, TransactionInfo>? {
+        val factory = ConcurrentKafkaListenerContainerFactory<String, TransactionInfo>()
+        factory.consumerFactory = TransactionInfoconsumerFactory()
+        factory.containerProperties.ackMode = ContainerProperties.AckMode.MANUAL_IMMEDIATE
+        factory.containerProperties.isSyncCommits = true
+        return factory
+    }
+
 }

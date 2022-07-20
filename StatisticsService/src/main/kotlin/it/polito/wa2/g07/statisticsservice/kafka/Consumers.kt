@@ -11,13 +11,16 @@ import org.springframework.kafka.annotation.KafkaListener
 import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.kafka.support.Acknowledgment
 import org.springframework.stereotype.Component
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.util.*
 
 @Component
 class Consumers {
     private val logger = LoggerFactory.getLogger(javaClass)
 
-    @Autowired
-    lateinit var kafkaTemplate: KafkaTemplate<String, Any>
+//    @Autowired
+//    lateinit var kafkaTemplate: KafkaTemplate<String, TransitInfo>
 
     @Autowired
     lateinit var statisticsService: StatisticsService
@@ -36,7 +39,7 @@ class Consumers {
         )
     }
 
-    @KafkaListener(topics = ["\${kafka.topics.transaction}"], groupId = "ppr")
+    @KafkaListener(topics = ["\${kafka.topics.transaction}"], groupId = "ppr3")
     fun transactionListener(consumerRecord: ConsumerRecord<Any, Any>, ack: Acknowledgment) {
         logger.info("Message received {}", consumerRecord)
         ack.acknowledge()
@@ -49,7 +52,9 @@ class Consumers {
             ticketAmount = transactionInfo.ticketsAmount,
             ticketId =  ObjectId(transactionInfo.ticketId),
             cost = transactionInfo.totCost,
-            date = transactionInfo.date,
+            date = Date(LocalDateTime.parse(transactionInfo.date)
+                    .atZone(ZoneId.systemDefault())
+                    .toInstant().toEpochMilli()),
             username = transactionInfo.owner)
         )
     }

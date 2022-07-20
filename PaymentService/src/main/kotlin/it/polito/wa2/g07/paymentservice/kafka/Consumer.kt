@@ -11,6 +11,8 @@ import org.springframework.kafka.support.Acknowledgment
 import org.springframework.kafka.support.KafkaHeaders
 import org.springframework.messaging.support.MessageBuilder
 import org.springframework.stereotype.Component
+import java.time.LocalDate
+import java.time.LocalDateTime
 import java.util.*
 
 @Component
@@ -47,7 +49,7 @@ class Consumer {
                   owner = billingInfo.owner,
                   totCost = billingInfo.totCost,
                   jwt = billingInfo.jwt,
-                  date = Date())
+                  date = LocalDateTime.now().toString())
           )
           .setHeader(KafkaHeaders.TOPIC, "outcome")
           .build()
@@ -66,7 +68,7 @@ class Consumer {
               owner = billingInfo.owner,
               totCost = billingInfo.totCost,
               jwt = billingInfo.jwt,
-              date = Date())
+              date = LocalDateTime.now().toString())
           )
           .setHeader(KafkaHeaders.TOPIC, "outcome")
           .build()
