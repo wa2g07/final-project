@@ -16,7 +16,7 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 import java.util.*
 
-@Service
+@Component
 class Consumers {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -53,9 +53,7 @@ class Consumers {
             ticketAmount = transactionInfo.ticketsAmount,
             ticketId =  ObjectId(transactionInfo.ticketId),
             cost = transactionInfo.totCost,
-            date = /*transactionInfo.date*/Date(LocalDateTime.parse(transactionInfo.date)
-                    .atZone(ZoneId.systemDefault())
-                    .toInstant().toEpochMilli()),
+            date = transactionInfo.date,
             username = transactionInfo.owner)
         )
     }

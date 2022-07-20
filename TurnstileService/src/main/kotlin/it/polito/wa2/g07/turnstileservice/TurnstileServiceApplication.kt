@@ -25,7 +25,7 @@ class TurnstileServiceApplication {
                 .withPayload(TransitInfo(
                         turnstileId = 1,
                         ticketId = 123455909,
-                        ticketType = "type3",
+                        ticketType = "62d7cc2bfefe406f7f95855c",
                         timestamp = Date(),
                         username = "customer"
 
@@ -35,7 +35,7 @@ class TurnstileServiceApplication {
                 .withPayload(TransitInfo(
                         turnstileId = 1,
                         ticketId = 123455907,
-                        ticketType = "type1",
+                        ticketType = "62d7cc2bfefe406f7f95855c",
                         timestamp = Date(),
                         username = "customer"
 

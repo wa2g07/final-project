@@ -1,6 +1,7 @@
 package it.polito.wa2.g07.ticketcatalogueservice.kafka
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import java.util.*
 
 data class Outcome(
         @JsonProperty("result")
@@ -22,5 +23,7 @@ data class Outcome(
         @JsonProperty("totCost")
         val totCost: Double,
         @JsonProperty("jwt")
-        val jwt: String
+        val jwt: String,
+        @JsonProperty("date")
+        val date: Date
 )
