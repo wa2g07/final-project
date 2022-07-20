@@ -8,20 +8,13 @@ import org.bson.types.ObjectId
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.kafka.annotation.KafkaListener
-import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.kafka.support.Acknowledgment
 import org.springframework.stereotype.Component
-import org.springframework.stereotype.Service
-import java.time.LocalDateTime
-import java.time.ZoneId
-import java.util.*
+
 
 @Component
 class Consumers {
     private val logger = LoggerFactory.getLogger(javaClass)
-
-//    @Autowired
-//    lateinit var kafkaTemplate: KafkaTemplate<String, TransitInfo>
 
     @Autowired
     lateinit var statisticsService: StatisticsService
@@ -45,7 +38,7 @@ class Consumers {
         logger.info("Message received {}", consumerRecord)
         ack.acknowledge()
         val transactionInfo = consumerRecord.value() as TransactionInfo
-        var success : Boolean = true
+        var success = true
         if(transactionInfo.result.compareTo("failure")==0)
             success = false
         statisticsService.saveTransaction(TransactionDTO(

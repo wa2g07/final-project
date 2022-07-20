@@ -5,7 +5,7 @@ import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
 import java.util.*
 
-@Document
+@Document(collection = "transactions")
 data class Transaction(
     @Id
     val id: ObjectId = ObjectId.get(),
