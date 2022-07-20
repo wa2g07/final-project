@@ -10,9 +10,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 
-
 @Configuration
-class WebSecurityConfig : WebSecurityConfigurerAdapter() {
+class AdminSecurityConfiguration : WebSecurityConfigurerAdapter() {
 
   @Autowired
   private val unauthorizedHandler: AuthEntryPointJwt? = null
@@ -32,6 +31,7 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
       .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // no sessions
       .and()
       .authorizeRequests()
+      .mvcMatchers("/**").permitAll()
       .mvcMatchers("/admin/**").hasRole("SUPERADMIN")
       .anyRequest().authenticated()
     http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter::class.java)

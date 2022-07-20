@@ -97,7 +97,8 @@ class UserServiceImpl(
     val user = User(
       username = userDTO.username,
       password = userDTO.password,
-      email = userDTO.email
+      email = userDTO.email,
+      roles = Role.SUPERADMIN.printableName
     )
     val u = userRepository.save(
       user
