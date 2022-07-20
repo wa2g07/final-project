@@ -7,5 +7,6 @@
     <file type="web" url="file://$PROJECT_DIR$/StatisticsService" />
     <file type="web" url="file://$PROJECT_DIR$/TicketCatalogueService" />
     <file type="web" url="file://$PROJECT_DIR$/TravelerService" />
+    <file type="web" url="file://$PROJECT_DIR$/TurnstileService" />
   </component>
 </project>
