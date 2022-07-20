@@ -34,6 +34,29 @@ class RegistrationController(val service: UserService) {
         }
     }
 
+    @PostMapping("/admin/register")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    fun adminRegistration(@RequestBody body: RegistrationUser): AdminRegistrationResponse {
+        try {
+            val userDTO =
+                service.registerAdmin(
+                    UserDTO(
+                        username = body.nickname,
+                        email = body.email,
+                        password = body.password
+                    ),
+                    ""
+                )
+
+            return AdminRegistrationResponse(
+                provisional_id = userDTO.id!!, email = userDTO.email!!
+            )
+
+        } catch (e: Exception) {
+            throw ResponseStatusException(HttpStatus.BAD_REQUEST)
+        }
+    }
+
     @PostMapping("/user/validate")
     @ResponseStatus(HttpStatus.CREATED)
     fun validation(@RequestBody body: ActivationUser): ValidationResponse {

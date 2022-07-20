@@ -5,4 +5,5 @@ data class RegistrationUser(val nickname: String, val email: String, val passwor
 data class LoginUser(val username: String, val password:String)
 
 data class RegistrationResponse(val provisional_id: String, val email: String)
+data class AdminRegistrationResponse(val provisional_id: Long, val email: String)
 data class ValidationResponse(val userId: Long, val nickname: String, val email: String)
