@@ -32,7 +32,7 @@ class TurnstileServiceTestApplication {
                             username = "customer1"
                         )
                         )
-                        .setHeader(KafkaHeaders.TOPIC, "outcome")
+                        .setHeader(KafkaHeaders.TOPIC, "transit")
                         .build()
                 val message1: org.springframework.messaging.Message<TransitInfo> = MessageBuilder
                         .withPayload(TransitInfo(
@@ -43,7 +43,7 @@ class TurnstileServiceTestApplication {
                                 username = "customer2"
                         )
                         )
-                        .setHeader(KafkaHeaders.TOPIC, "outcome")
+                        .setHeader(KafkaHeaders.TOPIC, "transit")
                         .build()
                 kafkaTemplate.send(message)
                 kafkaTemplate.send(message1)

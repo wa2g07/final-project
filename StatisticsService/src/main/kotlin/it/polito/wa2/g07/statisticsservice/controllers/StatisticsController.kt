@@ -45,7 +45,7 @@ class StatisticsController(val statisticsService: StatisticsService) {
     @GetMapping(value = ["/admin/statistics/transits/perHour"], produces = [MediaType.APPLICATION_NDJSON_VALUE])
     @ResponseStatus(HttpStatus.OK)
     fun getTransitsCountPerHour(@RequestParam("date") date: String): Flow<TransitCountDTO> {
-        return statisticsService.getTransitCountPerHour(SimpleDateFormat("yyyyMMdd").parse(date)).asFlow()
+        return statisticsService.getTransitCountPerHour(SimpleDateFormat("yyyyMMdd").parse(date))!!.asFlow()
     }
 
     /*

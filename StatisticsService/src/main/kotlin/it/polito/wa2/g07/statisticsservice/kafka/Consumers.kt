@@ -11,11 +11,12 @@ import org.springframework.kafka.annotation.KafkaListener
 import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.kafka.support.Acknowledgment
 import org.springframework.stereotype.Component
+import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.util.*
 
-@Component
+@Service
 class Consumers {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -25,7 +26,7 @@ class Consumers {
     @Autowired
     lateinit var statisticsService: StatisticsService
 
-    @KafkaListener(topics = ["\${kafka.topics.transit}"], groupId = "ppr")
+    @KafkaListener(topics = ["transit"], groupId = "ppr4", containerFactory = "transitInfokafkaListenerContainerFactory")
     fun transitListener(consumerRecord: ConsumerRecord<Any, Any>, ack: Acknowledgment) {
         logger.info("Message received {}", consumerRecord)
         ack.acknowledge()
@@ -39,7 +40,7 @@ class Consumers {
         )
     }
 
-    @KafkaListener(topics = ["\${kafka.topics.transaction}"], groupId = "ppr3")
+    @KafkaListener(topics = ["outcome"], groupId = "ppr3", containerFactory = "TransactionInfokafkaListenerContainerFactory")
     fun transactionListener(consumerRecord: ConsumerRecord<Any, Any>, ack: Acknowledgment) {
         logger.info("Message received {}", consumerRecord)
         ack.acknowledge()

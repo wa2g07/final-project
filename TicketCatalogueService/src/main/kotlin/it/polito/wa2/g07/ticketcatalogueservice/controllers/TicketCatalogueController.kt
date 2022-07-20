@@ -88,9 +88,9 @@ class TicketCatalogueController(
       val ageLimit = array[0].digitToInt() * 10 + array[1].digitToInt()
       val sign = array[2]
       if(sign == 'p' && dob.isAfter(LocalDate.now().minusYears(ageLimit.toLong())))
-        throw ResponseStatusException(HttpStatus.BAD_REQUEST, "You are not young enough to buy this ticket type")
-      if(sign == 'm' && dob.isBefore(LocalDate.now().minusYears(ageLimit.toLong())))
         throw ResponseStatusException(HttpStatus.BAD_REQUEST, "You are not old enough to buy this ticket type")
+      if(sign == 'm' && dob.isBefore(LocalDate.now().minusYears(ageLimit.toLong())))
+        throw ResponseStatusException(HttpStatus.BAD_REQUEST, "You are not young enough to buy this ticket type")
 
     }
 

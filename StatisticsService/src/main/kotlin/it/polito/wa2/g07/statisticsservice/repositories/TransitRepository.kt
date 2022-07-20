@@ -11,10 +11,12 @@ import java.util.Date
 
 @Repository
 interface TransitRepository : ReactiveMongoRepository<Transit, ObjectId> {
+    /*
     @Query()
     fun getTransitsCountPerDay(from: Date, to: Date): Flux<TransitCountDTO>
     @Query()
     fun getTransitsCountPerHour(day: Date): Flux<TransitCountDTO>
     @Query()
     fun getMyTransitsCountPerHour(from: Date, to: Date, username: String): Flux<TransitCountDTO>
+    */
 }

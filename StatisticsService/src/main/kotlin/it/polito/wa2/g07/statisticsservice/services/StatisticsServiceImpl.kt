@@ -45,7 +45,8 @@ class StatisticsServiceImpl(val transactionRepository: TransactionRepository,
         if(to.month == today.month && to.year == today.year && to.date > today.date)
             throw Exception("To param cannot be in the future with respect to today")
         else
-            return transitRepository.getTransitsCountPerDay(from, to)
+            //return transitRepository.getTransitsCountPerDay(from, to)
+            return Flux.empty()
     }
 
     override fun getTransitCountPerHour(day: Date): Flux<TransitCountDTO> {
@@ -53,7 +54,9 @@ class StatisticsServiceImpl(val transactionRepository: TransactionRepository,
         if(day.month == today.month && day.year == today.year && day.date > today.date)
             throw Exception("Day param cannot be in the future with respect to today")
         else
-            return transitRepository.getTransitsCountPerHour(day)
+
+            //return transitRepository.getTransitsCountPerHour(day)
+            return Flux.empty()
     }
 
     override fun getMyTransitCountPerHour(from: Date, to: Date, username: String): Flux<TransitCountDTO> {
@@ -65,6 +68,7 @@ class StatisticsServiceImpl(val transactionRepository: TransactionRepository,
         if(to.month == today.month && to.year == today.year && to.date > today.date)
             throw Exception("To param cannot be in the future with respect to today")
         else
-            return transitRepository.getMyTransitsCountPerHour(from, to, username)
+            //return transitRepository.getMyTransitsCountPerHour(from, to, username)
+            return Flux.empty()
     }
 }
