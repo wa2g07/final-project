@@ -49,7 +49,7 @@ class Consumer {
                   owner = billingInfo.owner,
                   totCost = billingInfo.totCost,
                   jwt = billingInfo.jwt,
-                  date = LocalDateTime.now().toString())
+                  date = /*Date()*/LocalDateTime.now().toString())
           )
           .setHeader(KafkaHeaders.TOPIC, "outcome")
           .build()
@@ -68,7 +68,7 @@ class Consumer {
               owner = billingInfo.owner,
               totCost = billingInfo.totCost,
               jwt = billingInfo.jwt,
-              date = LocalDateTime.now().toString())
+              date = LocalDateTime.now().toString()/*Date()*/)
           )
           .setHeader(KafkaHeaders.TOPIC, "outcome")
           .build()

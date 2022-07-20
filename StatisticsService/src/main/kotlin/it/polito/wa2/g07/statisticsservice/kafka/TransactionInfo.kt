@@ -26,4 +26,5 @@ class TransactionInfo (
     val jwt: String,
     @JsonProperty("date")
     val date: String
+    //val date: Date
 ){}

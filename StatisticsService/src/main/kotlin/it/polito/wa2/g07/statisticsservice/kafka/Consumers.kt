@@ -52,7 +52,7 @@ class Consumers {
             ticketAmount = transactionInfo.ticketsAmount,
             ticketId =  ObjectId(transactionInfo.ticketId),
             cost = transactionInfo.totCost,
-            date = Date(LocalDateTime.parse(transactionInfo.date)
+            date = /*transactionInfo.date*/Date(LocalDateTime.parse(transactionInfo.date)
                     .atZone(ZoneId.systemDefault())
                     .toInstant().toEpochMilli()),
             username = transactionInfo.owner)

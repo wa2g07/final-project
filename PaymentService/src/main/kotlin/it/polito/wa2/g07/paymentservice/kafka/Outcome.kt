@@ -25,5 +25,6 @@ data class Outcome(
     @JsonProperty("jwt")
     val jwt: String,
     @JsonProperty("date")
+    //val date: Date
     val date: String
 )
