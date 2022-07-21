@@ -31,20 +31,22 @@ class JwtAuthenticationTokenFilter : OncePerRequestFilter() {
 
   @Throws(ServletException::class, IOException::class)
   override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, filterChain: FilterChain) {
-    try {
-      val jwt: String? = parseJwt(request)
-      if (jwt != null && jwtUtils!!.validateJwt(jwt)) {
-        val userDetails = jwtUtils.getDetailsJwt(jwt)
-        val role = jwtUtils.getJwtRoles(jwt)
-        val authentication = UsernamePasswordAuthenticationToken(
-          userDetails, null, getAuthorities(role)
-        )
+    if(request.requestURI.contains("/admin/")) {
+      try {
+        val jwt: String? = parseJwt(request)
+        if (jwt != null && jwtUtils!!.validateJwt(jwt)) {
+          val userDetails = jwtUtils.getDetailsJwt(jwt)
+          val role = jwtUtils.getJwtRoles(jwt)
+          val authentication = UsernamePasswordAuthenticationToken(
+            userDetails, null, getAuthorities(role)
+          )
 
-        authentication.details = WebAuthenticationDetailsSource().buildDetails(request)
-        SecurityContextHolder.getContext().authentication = authentication
+          authentication.details = WebAuthenticationDetailsSource().buildDetails(request)
+          SecurityContextHolder.getContext().authentication = authentication
+        }
+      } catch (e: Exception) {
+        logger.error("Cannot set user authentication: {}", e)
       }
-    } catch (e: Exception) {
-      logger.error("Cannot set user authentication: {}", e)
     }
     filterChain.doFilter(request, response)
   }

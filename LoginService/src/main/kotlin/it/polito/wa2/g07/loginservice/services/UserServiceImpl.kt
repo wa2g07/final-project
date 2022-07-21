@@ -74,7 +74,7 @@ class UserServiceImpl(
 
   }
 
-  override fun registerAdmin(userDTO: UserDTO, superadminName: String): UserDTO {
+  override fun registerAdmin(userDTO: UserDTO, superadminName: String, userRole: Role): UserDTO {
     if (!checkEmail(userDTO.email) || !checkPassword(userDTO.password)) {
       throw IllegalArgumentException("wrong DTO")
     }
@@ -87,8 +87,12 @@ class UserServiceImpl(
       throw IllegalArgumentException("user with this nickname already exists")
     }
 
+    if (userRole != Role.SUPERADMIN && userRole != Role.ADMIN) {
+      throw IllegalArgumentException("role not allowed")
+    }
+
     val superadmin = userRepository.getUserByUsername(superadminName)
-    if (!BCrypt.checkpw(
+    if (BCrypt.checkpw(
         "admin",
         superadmin.password
       )
@@ -98,7 +102,8 @@ class UserServiceImpl(
       username = userDTO.username,
       password = userDTO.password,
       email = userDTO.email,
-      roles = Role.SUPERADMIN.printableName
+      activated = true,
+      roles = userRole.printableName
     )
     val u = userRepository.save(
       user

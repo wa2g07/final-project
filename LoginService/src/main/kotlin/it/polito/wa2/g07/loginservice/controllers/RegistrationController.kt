@@ -6,6 +6,7 @@ import it.polito.wa2.g07.loginservice.utils.*
 import it.polito.wa2.g07.loginservice.services.UserService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.server.ResponseStatusException
 
@@ -36,7 +37,8 @@ class RegistrationController(val service: UserService) {
 
     @PostMapping("/admin/register")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    fun adminRegistration(@RequestBody body: RegistrationUser): AdminRegistrationResponse {
+    fun adminRegistration(@RequestBody body: RegistrationAdmin): AdminRegistrationResponse {
+        val superadmin = SecurityContextHolder.getContext().authentication.principal as UserDTO
         try {
             val userDTO =
                 service.registerAdmin(
@@ -45,7 +47,8 @@ class RegistrationController(val service: UserService) {
                         email = body.email,
                         password = body.password
                     ),
-                    ""
+                    superadmin.username,
+                    body.role
                 )
 
             return AdminRegistrationResponse(
