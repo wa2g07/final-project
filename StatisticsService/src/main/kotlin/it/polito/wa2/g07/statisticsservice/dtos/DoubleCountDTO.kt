@@ -1,6 +1,6 @@
 package it.polito.wa2.g07.statisticsservice.dtos
 
-data class TransitCountDTO(
+data class DoubleCountDTO(
     val _id: String,
-    val count: Long
+    val value: Double
 )

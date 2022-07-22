@@ -2,8 +2,9 @@ package it.polito.wa2.g07.statisticsservice.services
 
 import it.polito.wa2.g07.statisticsservice.documents.Transaction
 import it.polito.wa2.g07.statisticsservice.documents.Transit
+import it.polito.wa2.g07.statisticsservice.dtos.DoubleCountDTO
 import it.polito.wa2.g07.statisticsservice.dtos.TransactionDTO
-import it.polito.wa2.g07.statisticsservice.dtos.TransitCountDTO
+import it.polito.wa2.g07.statisticsservice.dtos.LongCountDTO
 import it.polito.wa2.g07.statisticsservice.dtos.TransitDTO
 import it.polito.wa2.g07.statisticsservice.repositories.TransactionRepository
 import it.polito.wa2.g07.statisticsservice.repositories.TransitRepository
@@ -36,7 +37,7 @@ class StatisticsServiceImpl(val transactionRepository: TransactionRepository,
         ).block()
     }
 
-    override fun getTransitCountPerDay(from: Date, to: Date): Flux<TransitCountDTO> {
+    override fun getTransitCountPerDay(from: Date, to: Date): Flux<LongCountDTO> {
         val today = Date()
         if(to.before(from))
             throw Exception("To param cannot be past with respect to before param")
@@ -45,18 +46,16 @@ class StatisticsServiceImpl(val transactionRepository: TransactionRepository,
         if(to.month == today.month && to.year == today.year && to.date > today.date)
             throw Exception("To param cannot be in the future with respect to today")
         return transitRepository.getTransitsCountPerDay(from, to)
-        //return Flux.empty()
     }
 
-    override fun getTransitCountPerHour(day: Date): Flux<TransitCountDTO> {
+    override fun getTransitCountPerHour(day: Date): Flux<LongCountDTO> {
         val today = Date()
         if(day.month == today.month && day.year == today.year && day.date > today.date)
             throw Exception("Day param cannot be in the future with respect to today")
         return transitRepository.getTransitsCountPerHour(day)
-        //return Flux.empty()
     }
 
-    override fun getMyTransitCountPerHour(from: Date, to: Date, username: String): Flux<TransitCountDTO> {
+    override fun getMyTransitCountPerHour(from: Date, to: Date, username: String): Flux<LongCountDTO> {
         val today = Date()
         if(to.before(from))
             throw Exception("To param cannot be past with respect to before param")
@@ -65,6 +64,24 @@ class StatisticsServiceImpl(val transactionRepository: TransactionRepository,
         if(to.month == today.month && to.year == today.year && to.date > today.date)
             throw Exception("To param cannot be in the future with respect to today")
         return transitRepository.getMyTransitsCountPerHour(from, to, username)
-        //return Flux.empty()
     }
+
+    override fun getRevenuesPerMonth(year: String): Flux<DoubleCountDTO> {
+        val today = Date()
+        if(today.year < year.toInt())
+            throw Exception("Year param cannot be in the future")
+        return transactionRepository.getRevenuesPerMonth(year)
+    }
+
+    override fun getMyExpensesPerMonth(year: String, username: String): Flux<DoubleCountDTO> {
+        val today = Date()
+        if(today.year < year.toInt())
+            throw Exception("Year param cannot be in the future")
+        return transactionRepository.getMyExpensesPerMonth(year, username)
+    }
+
+    override fun getTopBuyers(limit: Int, year: String): Flux<LongCountDTO> {
+        return transactionRepository.getTopBuyers(limit)
+    }
+
 }

@@ -1,7 +1,7 @@
 package it.polito.wa2.g07.statisticsservice.repositories
 
 import it.polito.wa2.g07.statisticsservice.documents.Transit
-import it.polito.wa2.g07.statisticsservice.dtos.TransitCountDTO
+import it.polito.wa2.g07.statisticsservice.dtos.LongCountDTO
 import org.bson.types.ObjectId
 import org.springframework.data.mongodb.repository.Aggregation
 import org.springframework.data.mongodb.repository.ReactiveMongoRepository
@@ -17,18 +17,18 @@ interface TransitRepository : ReactiveMongoRepository<Transit, ObjectId> {
         "{'\$addFields': {'date': {'\$dateToString': {format: '%Y%m%d', date: '\$timestamp'}}}}",
         "{'\$match': {'date': {'\$gte': ?0, '\$lte': ?1}}}",
         "{'\$project': {'date': 1}}",
-        "{'\$group': {'_id': '\$date', 'count': {'\$count': {}}}}"
+        "{'\$group': {'_id': '\$date', 'value': {'\$count': {}}}}"
     ])
-    fun getTransitsCountPerDay(from: Date, to: Date): Flux<TransitCountDTO>
+    fun getTransitsCountPerDay(from: Date, to: Date): Flux<LongCountDTO>
 
     @Aggregation(pipeline = [
         "{'\$addFields': {'date': {'\$dateToString': {format: '%Y%m%d', date: '\$timestamp'}}}}",
         "{'\$match': {'date': ?0}}",
         "{'\$addFields': {'hour': {'\$hour': '\$timestamp'}}}",
         "{'\$project': {'hour': 1}}",
-        "{'\$group': {'_id': '\$hour', 'count': {'\$count': {}}}}"
+        "{'\$group': {'_id': '\$hour', 'value': {'\$count': {}}}}"
     ])
-    fun getTransitsCountPerHour(day: Date): Flux<TransitCountDTO>
+    fun getTransitsCountPerHour(day: Date): Flux<LongCountDTO>
 
     @Aggregation(pipeline = [
         "{'\$match': {'username': ?2}}",
@@ -36,7 +36,7 @@ interface TransitRepository : ReactiveMongoRepository<Transit, ObjectId> {
         "{'\$match': {'date': {'\$gte': ?0, '\$lte': ?1}}}",
         "{'\$addFields': {'hour': {'\$hour': '\$timestamp'}}}",
         "{'\$project': {'hour': 1}}",
-        "{'\$group': {'_id': '\$hour', 'count': {'\$count': {}}}}"
+        "{'\$group': {'_id': '\$hour', 'value': {'\$count': {}}}}"
     ])
-    fun getMyTransitsCountPerHour(from: Date, to: Date, username: String): Flux<TransitCountDTO>
+    fun getMyTransitsCountPerHour(from: Date, to: Date, username: String): Flux<LongCountDTO>
 }
