@@ -20,11 +20,11 @@ class StatisticsController(val statisticsService: StatisticsService) {
     /*
     Returns the number of transit for each day in the given interval of days.
     EXAMPLE REQUEST URL:
-    /admin/statistics/transits/perDay?from=20220701&to=20220703
+    /admin/statistics/transits/perDay?from=20220701&to=20220710
     EXAMPLE FLOW RESPONSE:
     "20220701": 200,
-    "20220702": 30,
     "20220703": 180
+    ...
      */
     @GetMapping(value = ["/admin/statistics/transits/perDay"], produces = [MediaType.APPLICATION_NDJSON_VALUE])
     @ResponseStatus(HttpStatus.OK)
@@ -37,9 +37,9 @@ class StatisticsController(val statisticsService: StatisticsService) {
     EXAMPLE REQUEST URL:
     /admin/statistics/transits/perHour?date=20220701
     EXAMPLE FLOW RESPONSE:
-    "00:": 12,
-    "01:": 3,
-    "02:": 0
+    "0": 2,
+    "1": 3,
+    "18": 9
     ...
      */
     @GetMapping(value = ["/admin/statistics/transits/perHour"], produces = [MediaType.APPLICATION_NDJSON_VALUE])
@@ -53,9 +53,9 @@ class StatisticsController(val statisticsService: StatisticsService) {
     EXAMPLE REQUEST URL:
     /my/statistics/transits/perDay?from=20220701&to=20220703
     EXAMPLE FLOW RESPONSE:
-    "00:": 102,
-    "01:": 97,
-    "02:": 0
+    "8": 45,
+    "12": 32,
+    "13": 91
     ...
      */
     @GetMapping(value = ["/my/statistics/transits/perHour"], produces = [MediaType.APPLICATION_NDJSON_VALUE])
