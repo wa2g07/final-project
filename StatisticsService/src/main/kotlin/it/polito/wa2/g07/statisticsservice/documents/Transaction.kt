@@ -13,6 +13,6 @@ data class Transaction(
     val ticketAmount: Int,
     val ticketId: ObjectId,
     val cost: Double,
-    val date: Date,
+    val timestamp: Date,
     val username: String
 ){}

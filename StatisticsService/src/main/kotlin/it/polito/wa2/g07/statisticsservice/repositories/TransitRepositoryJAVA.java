@@ -78,4 +78,23 @@ db.transits.aggregate([
     {$project: {hour: 1}},
     {$group: {_id: "$hour", count: {$count: {}}}}
 ])
+
+db.transactions.insertOne({
+    cost: 12.800000190734863,
+    date: ISODate(2021-7-21),
+    success: true,
+    ticketAmount: 3,
+    ticketId: "62d7cc2bfefe406f7f95855c",
+    username: "customer2"
+})
+db.transactions.aggregate([
+    {$addFields: {year: {$year: "$date"}}},
+    {$match: {year: 2022}},
+    {$project: {username: 1, ticketAmount: 1}},
+    {$group: {_id: "$username", value: {$sum: "$ticketAmount"}}},
+    {$sort: {value: 1}},
+    {$limit: 2}
+])
+
+db.transactions.find()
 */

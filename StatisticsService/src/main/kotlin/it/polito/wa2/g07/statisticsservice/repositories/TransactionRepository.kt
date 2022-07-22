@@ -19,7 +19,7 @@ interface TransactionRepository : ReactiveMongoRepository<Transaction, ObjectId>
         "{'\$project': {'month': 1, cost: 1}}",
         "{'\$group': {'_id': '\$month', 'value': {'\$sum': '\$cost'}}}"
     ])
-    fun getRevenuesPerMonth(year: String): Flux<DoubleCountDTO>
+    fun getRevenuesPerMonth(year: Int): Flux<DoubleCountDTO>
 
     @Aggregation(pipeline = [
         "{'\$match': {'username': ?1}}",
@@ -29,7 +29,7 @@ interface TransactionRepository : ReactiveMongoRepository<Transaction, ObjectId>
         "{'\$project': {'month': 1, cost: 1}}",
         "{'\$group': {'_id': '\$month', 'value': {'\$sum': '\$cost'}}}"
     ])
-    fun getMyExpensesPerMonth(year: String, username: String): Flux<DoubleCountDTO>
+    fun getMyExpensesPerMonth(year: Int, username: String): Flux<DoubleCountDTO>
 
     @Aggregation(pipeline = [
         "{'\$addFields': {'year': {'\$year': '\$timestamp'}}}",
@@ -39,5 +39,5 @@ interface TransactionRepository : ReactiveMongoRepository<Transaction, ObjectId>
         "{'\$sort': {'value': -1}}",
         "{'\$limit': ?0}"
     ])
-    fun getTopBuyers(limit: Int, year: String): Flux<LongCountDTO>
+    fun getTopBuyers(limit: Int, year: Int): Flux<LongCountDTO>
 }

@@ -22,7 +22,7 @@ class StatisticsServiceImpl(val transactionRepository: TransactionRepository,
             ticketAmount = transactionDTO.ticketAmount,
             ticketId = transactionDTO.ticketId,
             cost = transactionDTO.cost,
-            date = transactionDTO.date,
+            timestamp = transactionDTO.date,
             username = transactionDTO.username)
         ).block()
     }
@@ -66,22 +66,25 @@ class StatisticsServiceImpl(val transactionRepository: TransactionRepository,
         return transitRepository.getMyTransitsCountPerHour(from, to, username)
     }
 
-    override fun getRevenuesPerMonth(year: String): Flux<DoubleCountDTO> {
+    override fun getRevenuesPerMonth(year: Int): Flux<DoubleCountDTO> {
         val today = Date()
-        if(today.year < year.toInt())
+        if(today.year < year)
             throw Exception("Year param cannot be in the future")
         return transactionRepository.getRevenuesPerMonth(year)
     }
 
-    override fun getMyExpensesPerMonth(year: String, username: String): Flux<DoubleCountDTO> {
+    override fun getMyExpensesPerMonth(year: Int, username: String): Flux<DoubleCountDTO> {
         val today = Date()
-        if(today.year < year.toInt())
+        if(today.year < year)
             throw Exception("Year param cannot be in the future")
         return transactionRepository.getMyExpensesPerMonth(year, username)
     }
 
-    override fun getTopBuyers(limit: Int, year: String): Flux<LongCountDTO> {
-        return transactionRepository.getTopBuyers(limit)
+    override fun getTopBuyers(limit: Int, year: Int): Flux<LongCountDTO> {
+        val today = Date()
+        if(today.year < year)
+            throw Exception("Year param cannot be in the future")
+        return transactionRepository.getTopBuyers(limit, year)
     }
 
 }

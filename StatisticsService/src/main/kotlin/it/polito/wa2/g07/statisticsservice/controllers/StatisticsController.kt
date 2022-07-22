@@ -78,25 +78,11 @@ class StatisticsController(val statisticsService: StatisticsService) {
     @GetMapping(value = ["/admin/statistics/revenues/perMonth"], produces = [MediaType.APPLICATION_NDJSON_VALUE])
     @ResponseStatus(HttpStatus.OK)
     fun getRevenuesPerMonth(@RequestParam("year") year: String): Flow<DoubleCountDTO>{
-        return statisticsService.getRevenuesPerMonth(year).asFlow()
-    }
-    /*
-    Returns total amount of expenses per each month in the given year for the logged in user
-    EXAMPLE REQUEST URL:
-    /my/statistics/expenses/perMonth?year=2022
-    EXAMPLE FLOW RESPONSE:
-    "1": 10.80,
-    "2": 12.09,
-    ...
-*/
-    @GetMapping(value = ["/my/statistics/expenses/perMonth"], produces = [MediaType.APPLICATION_NDJSON_VALUE])
-    @ResponseStatus(HttpStatus.OK)
-    suspend fun getMyExpensesPerMonth(@RequestParam("year") year: String, @AuthenticationPrincipal principal: Mono<String>): Flow<DoubleCountDTO>{
-        return statisticsService.getMyExpensesPerMonth(year, username = principal.awaitSingle()).asFlow()
+        return statisticsService.getRevenuesPerMonth(year.toInt()).asFlow()
     }
 
     /*
-    Returns the top <limit> users in terms of number of tickets bought in the given year
+    Returns the top <limit> users in terms of number of tickets bought in the given year in descending order
     EXAMPLE REQUEST URL:
     /admin/statistics/topBuyers?limit=2&year=2022
     EXAMPLE FLOW RESPONSE:
@@ -106,7 +92,24 @@ class StatisticsController(val statisticsService: StatisticsService) {
     @GetMapping(value = ["/admin/statistics/topBuyers"], produces = [MediaType.APPLICATION_NDJSON_VALUE])
     @ResponseStatus(HttpStatus.OK)
     fun getTopBuyers(@RequestParam("limit") limit: Int, @RequestParam("year") year: String): Flow<LongCountDTO>{
-        return statisticsService.getTopBuyers(limit, year).asFlow()
+        return statisticsService.getTopBuyers(limit, year.toInt()).asFlow()
     }
+
+    /*
+    Returns total amount of expenses per each month in the given year for the logged in user
+    EXAMPLE REQUEST URL:
+    /my/statistics/expenses/perMonth?year=2022
+    EXAMPLE FLOW RESPONSE:
+    "1": 10.80,
+    "2": 12.09,
+    ...
+    */
+    @GetMapping(value = ["/my/statistics/expenses/perMonth"], produces = [MediaType.APPLICATION_NDJSON_VALUE])
+    @ResponseStatus(HttpStatus.OK)
+    suspend fun getMyExpensesPerMonth(@RequestParam("year") year: String, @AuthenticationPrincipal principal: Mono<String>): Flow<DoubleCountDTO>{
+        return statisticsService.getMyExpensesPerMonth(year.toInt(), username = principal.awaitSingle()).asFlow()
+    }
+
+
 }
 

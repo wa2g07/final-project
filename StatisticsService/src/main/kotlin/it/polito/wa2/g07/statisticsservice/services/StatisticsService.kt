@@ -14,10 +14,10 @@ interface StatisticsService {
     fun getTransitCountPerHour(day: Date): Flux<LongCountDTO>
     fun getMyTransitCountPerHour(from: Date, to: Date, username: String): Flux<LongCountDTO>
 
-    fun getRevenuesPerMonth(year: String): Flux<DoubleCountDTO>
+    fun getRevenuesPerMonth(year: Int): Flux<DoubleCountDTO>
 
-    fun getMyExpensesPerMonth(year: String, username: String): Flux<DoubleCountDTO>
+    fun getMyExpensesPerMonth(year: Int, username: String): Flux<DoubleCountDTO>
 
-    fun getTopBuyers(limit: Int, year: String): Flux<LongCountDTO>
+    fun getTopBuyers(limit: Int, year: Int): Flux<LongCountDTO>
 
 }
