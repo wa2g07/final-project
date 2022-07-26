@@ -4,6 +4,7 @@ import it.polito.wa2.g07.statisticsservice.dtos.DoubleCountDTO
 import it.polito.wa2.g07.statisticsservice.dtos.LongCountDTO
 import it.polito.wa2.g07.statisticsservice.services.StatisticsService
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.toSet
 import kotlinx.coroutines.reactive.asFlow
 import kotlinx.coroutines.reactive.awaitSingle
 import org.springframework.http.HttpStatus
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.server.ResponseStatusException
+import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import java.text.SimpleDateFormat
 
@@ -31,9 +33,12 @@ class StatisticsController(val statisticsService: StatisticsService) {
      */
     @GetMapping(value = ["/admin/statistics/transits/perDay"], produces = [MediaType.APPLICATION_NDJSON_VALUE])
     @ResponseStatus(HttpStatus.OK)
-    fun getTransitsCountPerDay(@RequestParam("from") from: String, @RequestParam("to") to: String) : Flow<LongCountDTO> {
+    suspend fun getTransitsCountPerDay(@RequestParam("from") from: String, @RequestParam("to") to: String) : Flow<LongCountDTO> {
         try {
-            return statisticsService.getTransitCountPerDay(SimpleDateFormat("yyyyMMdd").parse(from), SimpleDateFormat("yyyyMMdd").parse(to)).asFlow()
+            val res = statisticsService.getTransitCountPerDay(from,to).asFlow().toSet()
+
+            print(res)
+            return statisticsService.getTransitCountPerDay(from,to).asFlow()
         } catch (e: Exception) {
             throw ResponseStatusException(HttpStatus.BAD_REQUEST)
         }

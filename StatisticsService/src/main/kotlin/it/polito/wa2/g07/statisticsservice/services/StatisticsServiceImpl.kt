@@ -8,8 +8,11 @@ import it.polito.wa2.g07.statisticsservice.dtos.LongCountDTO
 import it.polito.wa2.g07.statisticsservice.dtos.TransitDTO
 import it.polito.wa2.g07.statisticsservice.repositories.TransactionRepository
 import it.polito.wa2.g07.statisticsservice.repositories.TransitRepository
+import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.reactive.asFlow
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Flux
+import java.text.SimpleDateFormat
 import java.util.*
 
 @Service
@@ -37,15 +40,18 @@ class StatisticsServiceImpl(val transactionRepository: TransactionRepository,
         ).block()
     }
 
-    override fun getTransitCountPerDay(from: Date, to: Date): Flux<LongCountDTO> {
+    override fun getTransitCountPerDay(from_string: String, to_string: String): Flux<LongCountDTO> {
         val today = Date()
+        val from = SimpleDateFormat("yyyyMMdd").parse(from_string)
+        val to = SimpleDateFormat("yyyyMMdd").parse(to_string)
         if(to.before(from))
             throw Exception("To param cannot be past with respect to before param")
         if(from.month == today.month && from.year == today.year && from.date > today.date)
             throw Exception("From param cannot be in the future with respect to today")
         if(to.month == today.month && to.year == today.year && to.date > today.date)
             throw Exception("To param cannot be in the future with respect to today")
-        return transitRepository.getTransitsCountPerDay(from, to)
+        //val res= transitRepository.getTransitsCountPerDay(from, to).asFlow()
+        return transitRepository.getTransitsCountPerDay(from_string, to_string)
     }
 
     override fun getTransitCountPerHour(day: Date): Flux<LongCountDTO> {

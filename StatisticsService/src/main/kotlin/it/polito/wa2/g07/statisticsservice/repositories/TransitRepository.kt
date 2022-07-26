@@ -19,7 +19,7 @@ interface TransitRepository : ReactiveMongoRepository<Transit, ObjectId> {
         "{'\$project': {'date': 1}}",
         "{'\$group': {'_id': '\$date', 'value': {'\$count': {}}}}"
     ])
-    fun getTransitsCountPerDay(from: Date, to: Date): Flux<LongCountDTO>
+    fun getTransitsCountPerDay(from: String, to: String): Flux<LongCountDTO>
 
     @Aggregation(pipeline = [
         "{'\$addFields': {'date': {'\$dateToString': {format: '%Y%m%d', date: '\$timestamp'}}}}",
