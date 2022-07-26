@@ -8,8 +8,6 @@ import it.polito.wa2.g07.statisticsservice.dtos.LongCountDTO
 import it.polito.wa2.g07.statisticsservice.dtos.TransitDTO
 import it.polito.wa2.g07.statisticsservice.repositories.TransactionRepository
 import it.polito.wa2.g07.statisticsservice.repositories.TransitRepository
-import kotlinx.coroutines.flow.toList
-import kotlinx.coroutines.reactive.asFlow
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Flux
 import java.text.SimpleDateFormat
@@ -76,21 +74,21 @@ class StatisticsServiceImpl(val transactionRepository: TransactionRepository,
 
     override fun getRevenuesPerMonth(year: Int): Flux<DoubleCountDTO> {
         val today = Date()
-        if(today.year < year)
+        if(today.year + 1900 < year) //date.year return the year - 1900
             throw Exception("Year param cannot be in the future")
         return transactionRepository.getRevenuesPerMonth(year)
     }
 
     override fun getMyExpensesPerMonth(year: Int, username: String): Flux<DoubleCountDTO> {
         val today = Date()
-        if(today.year < year)
+        if(today.year + 1900 < year) //date.year return the year - 1900
             throw Exception("Year param cannot be in the future")
         return transactionRepository.getMyExpensesPerMonth(year, username)
     }
 
     override fun getTopBuyers(limit: Int, year: Int): Flux<LongCountDTO> {
         val today = Date()
-        if(today.year < year)
+        if(today.year + 1900 < year) //date.year return the year - 1900
             throw Exception("Year param cannot be in the future")
         return transactionRepository.getTopBuyers(limit, year)
     }

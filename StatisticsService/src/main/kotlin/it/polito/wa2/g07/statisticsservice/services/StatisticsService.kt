@@ -5,7 +5,6 @@ import it.polito.wa2.g07.statisticsservice.dtos.TransactionDTO
 import it.polito.wa2.g07.statisticsservice.dtos.LongCountDTO
 import it.polito.wa2.g07.statisticsservice.dtos.TransitDTO
 import reactor.core.publisher.Flux
-import java.util.Date
 
 interface StatisticsService {
     fun saveTransaction(transactionDTO: TransactionDTO)
@@ -16,5 +15,4 @@ interface StatisticsService {
     fun getRevenuesPerMonth(year: Int): Flux<DoubleCountDTO>
     fun getMyExpensesPerMonth(year: Int, username: String): Flux<DoubleCountDTO>
     fun getTopBuyers(limit: Int, year: Int): Flux<LongCountDTO>
-
 }

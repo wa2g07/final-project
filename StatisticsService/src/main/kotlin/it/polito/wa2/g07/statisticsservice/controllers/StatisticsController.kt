@@ -4,7 +4,6 @@ import it.polito.wa2.g07.statisticsservice.dtos.DoubleCountDTO
 import it.polito.wa2.g07.statisticsservice.dtos.LongCountDTO
 import it.polito.wa2.g07.statisticsservice.services.StatisticsService
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.toSet
 import kotlinx.coroutines.reactive.asFlow
 import kotlinx.coroutines.reactive.awaitSingle
 import org.springframework.http.HttpStatus
@@ -15,15 +14,14 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.server.ResponseStatusException
-import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
-import java.text.SimpleDateFormat
 
 @RestController
 class StatisticsController(val statisticsService: StatisticsService) {
 
     /*
-    Returns the number of transit for each day in the given interval of days.
+    Returns the number of transits for each day in the given interval of days.
+    Missing field corresponds to 0 transits in the given date.
     EXAMPLE REQUEST URL:
     /admin/statistics/transits/perDay?from=20220701&to=20220710
     EXAMPLE FLOW RESPONSE:
@@ -42,7 +40,8 @@ class StatisticsController(val statisticsService: StatisticsService) {
     }
 
     /*
-    Returns the number of transits in each hour of the given day.
+    Returns the number of transits in each hour of the given date.
+    Missing field corresponds to 0 transits in the given hour.
     EXAMPLE REQUEST URL:
     /admin/statistics/transits/perHour?date=20220701
     EXAMPLE FLOW RESPONSE:
@@ -62,7 +61,8 @@ class StatisticsController(val statisticsService: StatisticsService) {
     }
 
     /*
-    Returns the number of transits in each hour aggregating data for each day in the given time period.
+    Returns the number of transits in each hour aggregating data for each day in the given time period for the logged in user.
+    Missing field corresponds to 0 transits in the given hour.
     EXAMPLE REQUEST URL:
     /my/statistics/transits/perDay?from=20220701&to=20220703
     EXAMPLE FLOW RESPONSE:
@@ -82,7 +82,8 @@ class StatisticsController(val statisticsService: StatisticsService) {
     }
 
     /*
-    Returns total amount of revenues per each month in the given year
+    Returns total amount of revenues per each month in the given year.
+    Missing field corresponds to 0.0 revenue in the given month.
     EXAMPLE REQUEST URL:
     /admin/statistics/revenues/perMonth?year=2022
     EXAMPLE FLOW RESPONSE:
@@ -102,6 +103,7 @@ class StatisticsController(val statisticsService: StatisticsService) {
 
     /*
     Returns the top <limit> users in terms of number of tickets bought in the given year in descending order
+    If empty list, nobody bought ticket in the given year (or limit = 0)
     EXAMPLE REQUEST URL:
     /admin/statistics/topBuyers?limit=2&year=2022
     EXAMPLE FLOW RESPONSE:
@@ -120,6 +122,7 @@ class StatisticsController(val statisticsService: StatisticsService) {
 
     /*
     Returns total amount of expenses per each month in the given year for the logged in user
+    Missing field corresponds to 0.0 expense in the given month.
     EXAMPLE REQUEST URL:
     /my/statistics/expenses/perMonth?year=2022
     EXAMPLE FLOW RESPONSE:
