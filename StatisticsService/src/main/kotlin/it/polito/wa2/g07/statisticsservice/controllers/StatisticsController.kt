@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.server.ResponseStatusException
 import reactor.core.publisher.Mono
 import java.text.SimpleDateFormat
 
@@ -47,7 +48,11 @@ class StatisticsController(val statisticsService: StatisticsService) {
     @GetMapping(value = ["/admin/statistics/transits/perHour"], produces = [MediaType.APPLICATION_NDJSON_VALUE])
     @ResponseStatus(HttpStatus.OK)
     fun getTransitsCountPerHour(@RequestParam("date") date: String): Flow<LongCountDTO> {
-        return statisticsService.getTransitCountPerHour(SimpleDateFormat("yyyyMMdd").parse(date)).asFlow()
+        try {
+            return statisticsService.getTransitCountPerHour(SimpleDateFormat("yyyyMMdd").parse(date)).asFlow()
+        } catch (e: Exception) {
+            throw ResponseStatusException(HttpStatus.BAD_REQUEST)
+        }
     }
 
     /*
@@ -63,7 +68,11 @@ class StatisticsController(val statisticsService: StatisticsService) {
     @GetMapping(value = ["/my/statistics/transits/perHour"], produces = [MediaType.APPLICATION_NDJSON_VALUE])
     @ResponseStatus(HttpStatus.OK)
     suspend fun getMyTransitsCountPerHour(@RequestParam("from") from: String, @RequestParam("to") to: String, @AuthenticationPrincipal principal: Mono<String>): Flow<LongCountDTO> {
-        return statisticsService.getMyTransitCountPerHour(SimpleDateFormat("yyyyMMdd").parse(from), SimpleDateFormat("yyyyMMdd").parse(to), principal.awaitSingle()).asFlow()
+        try {
+            return statisticsService.getMyTransitCountPerHour(SimpleDateFormat("yyyyMMdd").parse(from), SimpleDateFormat("yyyyMMdd").parse(to), principal.awaitSingle()).asFlow()
+        } catch (e: Exception) {
+            throw ResponseStatusException(HttpStatus.BAD_REQUEST)
+        }
     }
 
     /*
@@ -78,7 +87,11 @@ class StatisticsController(val statisticsService: StatisticsService) {
     @GetMapping(value = ["/admin/statistics/revenues/perMonth"], produces = [MediaType.APPLICATION_NDJSON_VALUE])
     @ResponseStatus(HttpStatus.OK)
     fun getRevenuesPerMonth(@RequestParam("year") year: String): Flow<DoubleCountDTO>{
-        return statisticsService.getRevenuesPerMonth(year.toInt()).asFlow()
+        try {
+            return statisticsService.getRevenuesPerMonth(year.toInt()).asFlow()
+        } catch (e: Exception) {
+            throw ResponseStatusException(HttpStatus.BAD_REQUEST)
+        }
     }
 
     /*
@@ -92,7 +105,11 @@ class StatisticsController(val statisticsService: StatisticsService) {
     @GetMapping(value = ["/admin/statistics/topBuyers"], produces = [MediaType.APPLICATION_NDJSON_VALUE])
     @ResponseStatus(HttpStatus.OK)
     fun getTopBuyers(@RequestParam("limit") limit: Int, @RequestParam("year") year: String): Flow<LongCountDTO>{
-        return statisticsService.getTopBuyers(limit, year.toInt()).asFlow()
+        try {
+            return statisticsService.getTopBuyers(limit, year.toInt()).asFlow()
+        } catch (e: Exception) {
+            throw ResponseStatusException(HttpStatus.BAD_REQUEST)
+        }
     }
 
     /*
@@ -107,7 +124,11 @@ class StatisticsController(val statisticsService: StatisticsService) {
     @GetMapping(value = ["/my/statistics/expenses/perMonth"], produces = [MediaType.APPLICATION_NDJSON_VALUE])
     @ResponseStatus(HttpStatus.OK)
     suspend fun getMyExpensesPerMonth(@RequestParam("year") year: String, @AuthenticationPrincipal principal: Mono<String>): Flow<DoubleCountDTO>{
-        return statisticsService.getMyExpensesPerMonth(year.toInt(), username = principal.awaitSingle()).asFlow()
+        try {
+            return statisticsService.getMyExpensesPerMonth(year.toInt(), username = principal.awaitSingle()).asFlow()
+        } catch (e: Exception) {
+            throw ResponseStatusException(HttpStatus.BAD_REQUEST)
+        }
     }
 
 
