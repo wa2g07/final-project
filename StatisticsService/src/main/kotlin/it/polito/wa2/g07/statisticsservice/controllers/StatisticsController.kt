@@ -33,7 +33,7 @@ class StatisticsController(val statisticsService: StatisticsService) {
      */
     @GetMapping(value = ["/admin/statistics/transits/perDay"], produces = [MediaType.APPLICATION_NDJSON_VALUE])
     @ResponseStatus(HttpStatus.OK)
-    suspend fun getTransitsCountPerDay(@RequestParam("from") from: String, @RequestParam("to") to: String) : Flow<LongCountDTO> {
+    suspend fun getTransitsCountPerDay(@RequestParam("from") from: String, @RequestParam("to") to: String) : Flow<Any> {
         try {
             val res = statisticsService.getTransitCountPerDay(from,to).asFlow().toSet()
 
