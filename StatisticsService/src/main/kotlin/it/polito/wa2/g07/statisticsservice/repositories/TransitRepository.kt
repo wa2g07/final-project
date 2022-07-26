@@ -15,7 +15,7 @@ interface TransitRepository : ReactiveMongoRepository<Transit, ObjectId> {
 
     @Aggregation(pipeline = [
         "{\$addFields: {date: {\$dateToString: {format: '%Y%m%d', date: '\$timestamp'}}}}",
-        "{\$match: {date: {\$gte: ?0, \$lte: ?1}}}",
+        "{\$match: {date: {\$gte: '?0', \$lte: '?1'}}}",
         "{\$project: {date: 1}}",
         "{\$group: {_id: '\$date', value: {\$count: {}}}}"
     ])
