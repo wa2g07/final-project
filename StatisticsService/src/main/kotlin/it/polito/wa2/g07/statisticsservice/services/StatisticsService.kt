@@ -10,14 +10,11 @@ import java.util.Date
 interface StatisticsService {
     fun saveTransaction(transactionDTO: TransactionDTO)
     fun saveTransit(transitDTO: TransitDTO)
-    fun getTransitCountPerDay(from_string: String, to_string: String): Flux<LongCountDTO>
-    fun getTransitCountPerHour(day: Date): Flux<LongCountDTO>
-    fun getMyTransitCountPerHour(from: Date, to: Date, username: String): Flux<LongCountDTO>
-
+    fun getTransitCountPerDay(from: String, to: String): Flux<LongCountDTO>
+    fun getTransitCountPerHour(day: String): Flux<LongCountDTO>
+    fun getMyTransitCountPerHour(from: String, to: String, username: String): Flux<LongCountDTO>
     fun getRevenuesPerMonth(year: Int): Flux<DoubleCountDTO>
-
     fun getMyExpensesPerMonth(year: Int, username: String): Flux<DoubleCountDTO>
-
     fun getTopBuyers(limit: Int, year: Int): Flux<LongCountDTO>
 
 }

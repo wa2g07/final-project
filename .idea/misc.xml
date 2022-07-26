@@ -9,4 +9,7 @@
     <file type="web" url="file://$PROJECT_DIR$/TravelerService" />
     <file type="web" url="file://$PROJECT_DIR$/TurnstileService" />
   </component>
+  <component name="ProjectType">
+    <option name="id" value="jpab" />
+  </component>
 </project>

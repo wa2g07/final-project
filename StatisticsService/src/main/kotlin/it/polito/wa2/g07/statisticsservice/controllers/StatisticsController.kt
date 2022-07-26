@@ -33,11 +33,8 @@ class StatisticsController(val statisticsService: StatisticsService) {
      */
     @GetMapping(value = ["/admin/statistics/transits/perDay"], produces = [MediaType.APPLICATION_NDJSON_VALUE])
     @ResponseStatus(HttpStatus.OK)
-    suspend fun getTransitsCountPerDay(@RequestParam("from") from: String, @RequestParam("to") to: String) : Flow<Any> {
+    suspend fun getTransitsCountPerDay(@RequestParam("from") from: String, @RequestParam("to") to: String) : Flow<LongCountDTO> {
         try {
-            val res = statisticsService.getTransitCountPerDay(from,to).asFlow().toSet()
-
-            print(res)
             return statisticsService.getTransitCountPerDay(from,to).asFlow()
         } catch (e: Exception) {
             throw ResponseStatusException(HttpStatus.BAD_REQUEST)
@@ -58,7 +55,7 @@ class StatisticsController(val statisticsService: StatisticsService) {
     @ResponseStatus(HttpStatus.OK)
     fun getTransitsCountPerHour(@RequestParam("date") date: String): Flow<LongCountDTO> {
         try {
-            return statisticsService.getTransitCountPerHour(SimpleDateFormat("yyyyMMdd").parse(date)).asFlow()
+            return statisticsService.getTransitCountPerHour(date).asFlow()
         } catch (e: Exception) {
             throw ResponseStatusException(HttpStatus.BAD_REQUEST)
         }
@@ -78,7 +75,7 @@ class StatisticsController(val statisticsService: StatisticsService) {
     @ResponseStatus(HttpStatus.OK)
     suspend fun getMyTransitsCountPerHour(@RequestParam("from") from: String, @RequestParam("to") to: String, @AuthenticationPrincipal principal: Mono<String>): Flow<LongCountDTO> {
         try {
-            return statisticsService.getMyTransitCountPerHour(SimpleDateFormat("yyyyMMdd").parse(from), SimpleDateFormat("yyyyMMdd").parse(to), principal.awaitSingle()).asFlow()
+            return statisticsService.getMyTransitCountPerHour(from,to,principal.awaitSingle()).asFlow()
         } catch (e: Exception) {
             throw ResponseStatusException(HttpStatus.BAD_REQUEST)
         }
@@ -139,7 +136,5 @@ class StatisticsController(val statisticsService: StatisticsService) {
             throw ResponseStatusException(HttpStatus.BAD_REQUEST)
         }
     }
-
-
 }
 

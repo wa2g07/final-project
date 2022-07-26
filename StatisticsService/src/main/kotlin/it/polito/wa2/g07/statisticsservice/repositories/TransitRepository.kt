@@ -7,7 +7,6 @@ import org.springframework.data.mongodb.repository.Aggregation
 import org.springframework.data.mongodb.repository.ReactiveMongoRepository
 import org.springframework.stereotype.Repository
 import reactor.core.publisher.Flux
-import java.util.*
 
 @Repository
 interface TransitRepository : ReactiveMongoRepository<Transit, ObjectId> {
@@ -18,26 +17,25 @@ interface TransitRepository : ReactiveMongoRepository<Transit, ObjectId> {
         "{\$match: {date: {\$gte: '?0', \$lte: '?1'}}}",
         "{\$project: {date: 1}}",
         "{\$group: {_id: '\$date', value: {\$count: {}}}}",
-        "{ \$project : { _id : 0, day : '\$_id', value : 1 } }"
     ])
     fun getTransitsCountPerDay(from: String, to: String): Flux<LongCountDTO>
 
     @Aggregation(pipeline = [
-        "{'\$addFields': {'date': {'\$dateToString': {format: '%Y%m%d', date: '\$timestamp'}}}}",
-        "{'\$match': {'date': ?0}}",
-        "{'\$addFields': {'hour': {'\$hour': '\$timestamp'}}}",
-        "{'\$project': {'hour': 1}}",
-        "{'\$group': {'_id': '\$hour', 'value': {'\$count': {}}}}"
+        "{\$addFields: {date: {\$dateToString: {format: '%Y%m%d', date: '\$timestamp'}}}}",
+        "{\$match: {date: '?0'}}",
+        "{\$addFields: {hour: {\$hour: '\$timestamp'}}}",
+        "{\$project: {hour: 1}}",
+        "{\$group: {_id: '\$hour', value: {\$count: {}}}}"
     ])
-    fun getTransitsCountPerHour(day: Date): Flux<LongCountDTO>
+    fun getTransitsCountPerHour(day: String): Flux<LongCountDTO>
 
     @Aggregation(pipeline = [
-        "{'\$match': {'username': ?2}}",
-        "{'\$addFields': {'date': {'\$dateToString': {format: '%Y%m%d', date: '\$timestamp'}}}}",
-        "{'\$match': {'date': {'\$gte': ?0, '\$lte': ?1}}}",
-        "{'\$addFields': {'hour': {'\$hour': '\$timestamp'}}}",
-        "{'\$project': {'hour': 1}}",
-        "{'\$group': {'_id': '\$hour', 'value': {'\$count': {}}}}"
+        "{\$match: {username: '?2'}}",
+        "{\$addFields: {date: {\$dateToString: {format: '%Y%m%d', date: '\$timestamp'}}}}",
+        "{\$match: {date: {\$gte: '?0', \$lte: '?1'}}}",
+        "{\$addFields: {hour: {\$hour: '\$timestamp'}}}",
+        "{\$project: {hour: 1}}",
+        "{\$group: {_id: '\$hour', value: {\$count: {}}}}"
     ])
-    fun getMyTransitsCountPerHour(from: Date, to: Date, username: String): Flux<LongCountDTO>
+    fun getMyTransitsCountPerHour(from: String, to: String, username: String): Flux<LongCountDTO>
 }

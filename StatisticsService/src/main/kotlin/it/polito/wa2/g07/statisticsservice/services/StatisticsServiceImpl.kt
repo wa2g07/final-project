@@ -40,34 +40,36 @@ class StatisticsServiceImpl(val transactionRepository: TransactionRepository,
         ).block()
     }
 
-    override fun getTransitCountPerDay(from_string: String, to_string: String): Flux<LongCountDTO> {
+    override fun getTransitCountPerDay(from: String, to: String): Flux<LongCountDTO> {
         val today = Date()
-        val from = SimpleDateFormat("yyyyMMdd").parse(from_string)
-        val to = SimpleDateFormat("yyyyMMdd").parse(to_string)
-        if(to.before(from))
-            throw Exception("To param cannot be past with respect to before param")
-        if(from.month == today.month && from.year == today.year && from.date > today.date)
+        val f = SimpleDateFormat("yyyyMMdd").parse(from)
+        val t = SimpleDateFormat("yyyyMMdd").parse(to)
+        if(t.before(f))
+            throw Exception("To param cannot be in past with respect to from param")
+        if(today.before(f))
             throw Exception("From param cannot be in the future with respect to today")
-        if(to.month == today.month && to.year == today.year && to.date > today.date)
+        if(today.before(t))
             throw Exception("To param cannot be in the future with respect to today")
-        //val res= transitRepository.getTransitsCountPerDay(from, to).asFlow()
-        return transitRepository.getTransitsCountPerDay(from_string, to_string)
+        return transitRepository.getTransitsCountPerDay(from, to)
     }
 
-    override fun getTransitCountPerHour(day: Date): Flux<LongCountDTO> {
+    override fun getTransitCountPerHour(day: String): Flux<LongCountDTO> {
         val today = Date()
-        if(day.month == today.month && day.year == today.year && day.date > today.date)
+        val d = SimpleDateFormat("yyyyMMdd").parse(day)
+        if(today.before(d))
             throw Exception("Day param cannot be in the future with respect to today")
         return transitRepository.getTransitsCountPerHour(day)
     }
 
-    override fun getMyTransitCountPerHour(from: Date, to: Date, username: String): Flux<LongCountDTO> {
+    override fun getMyTransitCountPerHour(from: String, to: String, username: String): Flux<LongCountDTO> {
         val today = Date()
-        if(to.before(from))
-            throw Exception("To param cannot be past with respect to before param")
-        if(from.month == today.month && from.year == today.year && from.date > today.date)
+        val f = SimpleDateFormat("yyyyMMdd").parse(from)
+        val t = SimpleDateFormat("yyyyMMdd").parse(to)
+        if(t.before(f))
+            throw Exception("To param cannot be in past with respect to from param")
+        if(today.before(f))
             throw Exception("From param cannot be in the future with respect to today")
-        if(to.month == today.month && to.year == today.year && to.date > today.date)
+        if(today.before(t))
             throw Exception("To param cannot be in the future with respect to today")
         return transitRepository.getMyTransitsCountPerHour(from, to, username)
     }
