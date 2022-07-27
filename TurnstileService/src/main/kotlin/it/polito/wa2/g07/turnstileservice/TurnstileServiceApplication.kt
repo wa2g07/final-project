@@ -15,7 +15,7 @@ import java.util.*
 
 @SpringBootApplication
 class TurnstileServiceApplication {
-
+    /*
     @Autowired
     lateinit var kafkaTemplate: KafkaTemplate<String,Any?>
 
@@ -48,6 +48,7 @@ class TurnstileServiceApplication {
             sleep(3000)
         }
     }
+    */
 }
 fun main(args: Array<String>) {
     runApplication<TurnstileServiceApplication>(*args)
