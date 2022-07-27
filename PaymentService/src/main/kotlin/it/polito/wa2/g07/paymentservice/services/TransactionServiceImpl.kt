@@ -3,7 +3,6 @@ package it.polito.wa2.g07.paymentservice.services
 
 import it.polito.wa2.g07.paymentservice.documents.Transaction
 import it.polito.wa2.g07.paymentservice.dtos.TransactionDTO
-import it.polito.wa2.g07.paymentservice.dtos.toDTO
 import it.polito.wa2.g07.paymentservice.repositories.TransactionRepository
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Flux
