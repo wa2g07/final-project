@@ -86,11 +86,7 @@ class TravelerController(val userService: UserService, val adminService: AdminSe
             val ticket = userService.getTicketPurchased(
                     userDetailsWithUsernameOnly,
                     ticketId = ticketId)
-            val gson = Gson()
-
-            val content = gson.toJson(ticket)
-
-            val imageData = QRCode(content).render()
+            val imageData = QRCode(ticket.jws).render()
             val imageBytes = ByteArrayOutputStream().also { ImageIO.write(imageData, "PNG", it) }.toByteArray()
             val resource = ByteArrayResource(imageBytes, IMAGE_PNG_VALUE)
 
