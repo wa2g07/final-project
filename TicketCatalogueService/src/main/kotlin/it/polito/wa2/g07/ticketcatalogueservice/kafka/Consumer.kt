@@ -1,11 +1,7 @@
 package it.polito.wa2.g07.ticketcatalogueservice.kafka
 
-import it.polito.wa2.g07.ticketcatalogueservice.security.JwtUtils
 import it.polito.wa2.g07.ticketcatalogueservice.services.TicketCatalogService
 import it.polito.wa2.g07.ticketcatalogueservice.utils.BuyTicketRequest
-import it.polito.wa2.g07.ticketcatalogueservice.utils.TicketResponse
-import jdk.jfr.ContentType
-import kotlinx.coroutines.reactor.awaitSingle
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -16,8 +12,6 @@ import org.springframework.kafka.annotation.KafkaListener
 import org.springframework.kafka.support.Acknowledgment
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.client.WebClient
-import org.springframework.web.reactive.function.client.bodyToMono
-import org.springframework.web.reactive.function.client.toEntity
 import javax.annotation.PostConstruct
 
 @Component
