@@ -26,9 +26,7 @@ class PruneDatabase(
   val logger: Logger =
     LoggerFactory.getLogger("PruneDatabase")
 
-  //a cleaning process occurs each 30 second, just for test purposes, in order to avoid tests to sleep for too long
-  //a reasonable value in production would be every 24 hours
-  @Scheduled(fixedDelay = 30000) // 30 sec
+  @Scheduled(fixedDelay = 3600000) // 1 hour
   fun pruneExpiredRegistration() {
     logger.info(
       "[i] Computing pruning at " +

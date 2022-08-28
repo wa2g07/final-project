@@ -31,7 +31,7 @@ class JwtAuthenticationTokenFilter : OncePerRequestFilter() {
 
   @Throws(ServletException::class, IOException::class)
   override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, filterChain: FilterChain) {
-    if(request.requestURI.contains("/admin/")) {
+    if(request.requestURI.contains("/admin/") || request.requestURI.contains("/password")) {
       try {
         val jwt: String? = parseJwt(request)
         if (jwt != null && jwtUtils!!.validateJwt(jwt)) {

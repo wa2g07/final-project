@@ -86,5 +86,17 @@ class RegistrationController(val service: UserService) {
         }
     }
 
+    @PutMapping("/password")
+    @ResponseStatus(HttpStatus.OK)
+    fun putMyProfile(@RequestBody body: UpdatePassword){
+        try {
+            val userDto = SecurityContextHolder.getContext().authentication.principal as UserDTO
+            service.updateUserPassword(userDto, body)
+        }
+        catch(e: Exception){
+            throw ResponseStatusException(HttpStatus.BAD_REQUEST)
+        }
+    }
+
 
 }

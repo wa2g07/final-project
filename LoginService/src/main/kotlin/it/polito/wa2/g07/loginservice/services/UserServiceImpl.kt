@@ -29,8 +29,6 @@ class UserServiceImpl(
   @Value("\${secrets.jwtkey}")
   lateinit var b64Key: String
 
-  //val b64Key = "TWMjLVp5MmQkRnhzRk5oOEdiNTVTczJQQGRrOUVHI3lUcjU/VVdDKw=="
-
   lateinit var key: SecretKey
 
   @PostConstruct
@@ -54,7 +52,7 @@ class UserServiceImpl(
 
     val user = User(
       username = userDTO.username,
-      password = userDTO.password,
+      password = BCrypt.hashpw(userDTO.password, BCrypt.gensalt()),
       email = userDTO.email
     )
     val u = userRepository.save(
@@ -100,7 +98,7 @@ class UserServiceImpl(
 
     val user = User(
       username = userDTO.username,
-      password = userDTO.password,
+      password = BCrypt.hashpw(userDTO.password, BCrypt.gensalt()),
       email = userDTO.email,
       activated = true,
       roles = userRole.printableName
@@ -162,5 +160,13 @@ class UserServiceImpl(
       )
     }
     throw IllegalArgumentException()
+  }
+
+  override fun updateUserPassword(userDTO: UserDTO, update: UpdatePassword) {
+    val u = userRepository.getUserByUsername(userDTO.username)
+    if (u != null && BCrypt.checkpw(update.oldpassword, u.password) && checkPassword(update.newpassword)) {
+      u.password = BCrypt.hashpw(update.newpassword, BCrypt.gensalt())
+    }
+    else throw IllegalArgumentException()
   }
 }

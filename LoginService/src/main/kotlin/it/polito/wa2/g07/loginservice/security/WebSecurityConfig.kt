@@ -34,6 +34,7 @@ class AdminSecurityConfiguration : WebSecurityConfigurerAdapter() {
       .authorizeRequests()
       .antMatchers("/**").permitAll()
       .mvcMatchers("/admin/**").hasRole("SUPERADMIN")
+      .mvcMatchers("/password").hasAnyRole("SUPERADMIN", "ADMIN", "CUSTOMER")
       .anyRequest().authenticated()
     http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter::class.java)
   }
